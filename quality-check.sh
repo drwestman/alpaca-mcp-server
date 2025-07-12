@@ -13,7 +13,7 @@ else
     echo "   ⚠️  Files need formatting 📝 (run: black .)"
 fi
 
-# MyPy  
+# MyPy
 echo "2. 🔍 MYPY (type checking):"
 if mypy . --ignore-missing-imports > /dev/null 2>&1; then
     echo "   ✅ PASSED - No type issues! 🧩"
