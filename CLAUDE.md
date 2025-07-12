@@ -1,0 +1,1 @@
+- Always use the quality fix (quality-fix.sh) script after adding and changing 100 lines or more of code.

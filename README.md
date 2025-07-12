@@ -35,6 +35,7 @@ This is a Model Context Protocol (MCP) server implementation for Alpaca's Tradin
 ## 0. Prerequisites
 
 - Python 3.10+
+- [uv](https://docs.astral.sh/uv/getting-started/installation/) package manager
 - GitHub account
 - Alpaca API keys (with paper or live trading access)
 - Claude for Desktop or another compatible MCP client
@@ -47,35 +48,34 @@ This is a Model Context Protocol (MCP) server implementation for Alpaca's Tradin
    cd alpaca-mcp-server
    ```
 
-2. Create and activate a virtual environment:
-
+2. Install dependencies and create virtual environment using uv:
    ```bash
-   python3 -m venv venv
-   source venv/bin/activate
+   uv sync
    ```
-    **Note:** The virtual environment will use the Python version that was used to create it. If you run the command with Python 3.10 or newer, your virtual environment will also use Python 3.10+. If you want to confirm the version, you can run `python3 --version` after activating the virtual environment. 
+   **Note:** This command automatically creates a virtual environment (if needed) and installs all dependencies from the lock file. The virtual environment will use Python 3.10+ as specified in the project configuration.
 
-3. Install the required packages:
+3. Activate the virtual environment:
    ```bash
-   pip install -r requirements.txt
+   source .venv/bin/activate
    ```
 
 
 ## Project Structure
 
-After cloning and activating the virtual environment, your directory structure should look like this:
+After cloning and running `uv sync`, your directory structure should look like this:
 ```
 alpaca-mcp-server/          ← This is the workspace folder (= project root)
 ├── alpaca_mcp_server.py    ← Script is directly in workspace root
 ├── .vscode/                ← VS Code settings (for VS Code users)
 │   └── mcp.json
-├── venv/                   ← Virtual environment folder
+├── .venv/                  ← Virtual environment folder (created by uv)
 │   └── bin/python
 ├── .env.example            ← Environment template (use this to create `.env` file)
 ├── .gitignore              
 ├── Dockerfile              ← Docker configuration (for Docker use)
 ├── .dockerignore           ← Docker ignore (for Docker use)
-├── requirements.txt           
+├── pyproject.toml          ← Project configuration and dependencies
+├── uv.lock                 ← Lock file for reproducible builds
 └── README.md
 ```
 
@@ -117,13 +117,13 @@ python alpaca_mcp_server.py
 3. Update your `claude_desktop_config.json`:
 
   **Note:**\
-    Replace <project_root> with the path to your cloned alpaca-mcp-server directory. This should point to the Python executable inside the virtual environment you created with `python3 -m venv venv` in the terminal.
+    Replace <project_root> with the path to your cloned alpaca-mcp-server directory. This should point to the Python executable inside the virtual environment created by `uv sync`.
 
 ```json
 {
   "mcpServers": {
     "alpaca": {
-      "command": "<project_root>/venv/bin/python",
+      "command": "<project_root>/.venv/bin/python",
       "args": [
         "/path/to/alpaca-mcp-server/alpaca_mcp_server.py"
       ],
@@ -144,7 +144,7 @@ The `claude mcp add command` is part of [Claude Code](https://www.anthropic.com/
 
 ```bash
 claude mcp add alpaca \
-  /path/to/your/alpaca-mcp-server/venv/bin/python \
+  /path/to/your/alpaca-mcp-server/.venv/bin/python \
   /path/to/your/alpaca-mcp-server/alpaca_mcp_server.py \
   -e ALPACA_API_KEY=your_api_key \
   -e ALPACA_SECRET_KEY=your_secret_key
@@ -191,7 +191,7 @@ The official VS Code setup document is available here: https://code.visualstudio
           "alpaca": {
             "type": "stdio",
             "command": "bash",
-            "args": ["-c", "cd ${workspaceFolder} && source ./venv/bin/activate && python alpaca_mcp_server.py"],
+            "args": ["-c", "cd ${workspaceFolder} && source ./.venv/bin/activate && python alpaca_mcp_server.py"],
             "env": {
               "ALPACA_API_KEY": "your_alpaca_api_key",
               "ALPACA_SECRET_KEY": "your_alpaca_secret_key"
@@ -210,7 +210,7 @@ The official VS Code setup document is available here: https://code.visualstudio
           "alpaca": {
             "type": "stdio", 
             "command": "cmd",
-            "args": ["/c", "cd /d ${workspaceFolder} && .\\venv\\Scripts\\activate && python alpaca_mcp_server.py"],
+            "args": ["/c", "cd /d ${workspaceFolder} && .\\.venv\\Scripts\\activate && python alpaca_mcp_server.py"],
             "env": {
               "ALPACA_API_KEY": "your_alpaca_api_key",
               "ALPACA_SECRET_KEY": "your_alpaca_secret_key"
@@ -236,7 +236,7 @@ Specify the server in the `mcp` VS Code user settings (`settings.json`) to enabl
       "alpaca": {
         "type": "stdio",
         "command": "bash",
-        "args": ["-c", "cd ${workspaceFolder} && source ./venv/bin/activate && python alpaca_mcp_server.py"],
+        "args": ["-c", "cd ${workspaceFolder} && source ./.venv/bin/activate && python alpaca_mcp_server.py"],
         "env": {
           "ALPACA_API_KEY": "your_alpaca_api_key",
           "ALPACA_SECRET_KEY": "your_alpaca_secret_key"
