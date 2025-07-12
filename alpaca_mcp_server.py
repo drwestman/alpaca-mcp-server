@@ -1,5 +1,6 @@
 import os
 import re
+import sys
 import time
 from datetime import date, datetime, timedelta
 from typing import Any
@@ -2086,6 +2087,19 @@ def parse_timeframe_with_enums(timeframe_str: str) -> TimeFrame | None:
         return None
 
 
+def main() -> None:
+    """Entry point for the Alpaca MCP server.
+
+    This function starts the MCP server using stdio transport.
+    It's called when the package is installed and run via the 'alpaca-mcp-server' command.
+    """
+    try:
+        mcp.run(transport="stdio")
+    except Exception as e:
+        print(f"Error starting Alpaca MCP server: {e}", file=sys.stderr)
+        sys.exit(1)
+
+
 # Run the server
 if __name__ == "__main__":
-    mcp.run(transport="stdio")
+    main()
