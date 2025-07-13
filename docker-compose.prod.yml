@@ -11,7 +11,7 @@ services:
         max-size: "10m"
         max-file: "3"
     # Production security context
-    user: "1000:1000"
+    # user: "1000:1000"  # Commented out - Dockerfile doesn't create this user
     read_only: true
     tmpfs:
       - /tmp:rw,noexec,nosuid,size=50m

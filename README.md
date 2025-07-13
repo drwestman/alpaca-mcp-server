@@ -354,9 +354,6 @@ For production deployment with optimized settings:
 ```bash
 # Use production configuration
 docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-
-# Or using the published image
-docker compose -f docker-compose.prod.yml up -d
 ```
 
 The production configuration:
