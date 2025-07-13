@@ -4,7 +4,6 @@ services:
     volumes:
       - .:/app:delegated
       - /app/.venv  # Prevent overwriting the container's virtual environment
-      - /app/uv.lock  # Preserve the lock file in container
     # Override build to use local development image
     build:
       context: .
