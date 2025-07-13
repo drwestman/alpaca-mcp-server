@@ -1,0 +1,32 @@
+services:
+  alpaca-mcp-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: alpaca-mcp-server
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      # Override with environment-specific values if needed
+      - ALPACA_PAPER_TRADE=${ALPACA_PAPER_TRADE:-true}
+    stdin_open: true
+    tty: true
+    # Uncomment the following lines if you need to expose a port for health checks or web interface
+    # ports:
+    #   - "8080:8080"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys; sys.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    # Resource limits for production stability
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.1'

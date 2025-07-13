@@ -303,6 +303,118 @@ Never share your API keys or commit them to public repositories. Be cautious whe
 **For more advanced Docker usage:**  
 See the [official Docker documentation](https://docs.docker.com/).
 
+## Docker Compose Usage
+
+Docker Compose provides a more convenient way to manage the Alpaca MCP Server, especially for development workflows and environment management.
+
+**Prerequisites:**
+- [Docker Compose](https://docs.docker.com/compose/install/) installed on your system
+- A `.env` file with your Alpaca API credentials (copy from `.env.example`)
+
+### Quick Start with Docker Compose
+
+1. **Copy environment file:**
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Edit `.env` file with your API credentials:**
+   ```env
+   ALPACA_API_KEY=your_alpaca_api_key_for_paper_account
+   ALPACA_SECRET_KEY=your_alpaca_secret_key_for_paper_account
+   ALPACA_PAPER_TRADE=true
+   ```
+
+3. **Start the server:**
+   ```bash
+   docker compose up
+   ```
+
+### Development Workflow
+
+For development with live code reloading:
+
+```bash
+# Start in development mode (uses docker-compose.override.yml automatically)
+docker compose up --build
+
+# Or explicitly specify the override file
+docker compose -f docker-compose.yml -f docker-compose.override.yml up --build
+```
+
+The development configuration:
+- Mounts your source code as a volume for live editing
+- Uses development-optimized settings
+- Automatically uses paper trading mode
+
+### Production Deployment
+
+For production deployment with optimized settings:
+
+```bash
+# Use production configuration
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+# Or using the published image
+docker compose -f docker-compose.prod.yml up -d
+```
+
+The production configuration:
+- Uses the published Docker image from GitHub Container Registry
+- Applies resource limits and security constraints
+- Optimized logging and restart policies
+
+### Using with Claude Desktop
+
+Update your `claude_desktop_config.json` to use Docker Compose:
+
+```json
+{
+  "mcpServers": {
+    "alpaca": {
+      "command": "docker",
+      "args": [
+        "compose",
+        "-f", "/path/to/alpaca-mcp-server/docker-compose.yml",
+        "run", "--rm", "alpaca-mcp-server"
+      ],
+      "cwd": "/path/to/alpaca-mcp-server",
+      "env": {
+        "ALPACA_API_KEY": "your_alpaca_api_key",
+        "ALPACA_SECRET_KEY": "your_alpaca_secret_key"
+      }
+    }
+  }
+}
+```
+
+**Note:** Replace `/path/to/alpaca-mcp-server` with the actual path to your project directory.
+
+### Available Docker Compose Files
+
+- `docker-compose.yml` - Base configuration for production use
+- `docker-compose.override.yml` - Development overrides (used automatically with `docker compose up`)
+- `docker-compose.prod.yml` - Production-specific optimizations
+
+### Common Commands
+
+```bash
+# Build the image
+docker compose build
+
+# Start services in background
+docker compose up -d
+
+# View logs
+docker compose logs -f
+
+# Stop services
+docker compose down
+
+# Remove everything including volumes
+docker compose down -v
+```
+
 ## 🔐 API Key Configuration for Live Trading
 
 This MCP server connects to Alpaca's **paper trading API** by default for safe testing.
