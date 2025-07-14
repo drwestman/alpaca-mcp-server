@@ -4,10 +4,6 @@ services:
     volumes:
       - .:/app:delegated
       - /app/.venv  # Prevent overwriting the container's virtual environment
-    # Override build to use local development image
-    build:
-      context: .
-      dockerfile: Dockerfile
     # Development-specific environment variables
     environment:
       - PYTHONUNBUFFERED=1

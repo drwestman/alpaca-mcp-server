@@ -1,7 +1,7 @@
 services:
   alpaca-mcp-server:
     # Use published image for production instead of building locally
-    image: ghcr.io/chand1012/alpaca-mcp-server:latest
+    image: ghcr.io/chand1012/alpaca-mcp-server:10f5821
     # Remove build context for production
     build: null
     # Production logging configuration
@@ -11,7 +11,7 @@ services:
         max-size: "10m"
         max-file: "3"
     # Production security context
-    # user: "1000:1000"  # Commented out - Dockerfile doesn't create this user
+    user: "1000:1000"
     read_only: true
     tmpfs:
       - /tmp:rw,noexec,nosuid,size=50m
@@ -31,7 +31,7 @@ services:
         window: 120s
     # Production healthcheck with longer intervals
     healthcheck:
-      test: ["CMD", "python", "-c", "import sys; sys.exit(0)"]
+      test: ["CMD", "pgrep", "-f", "alpaca_mcp_server.py"]
       interval: 60s
       timeout: 10s
       retries: 3

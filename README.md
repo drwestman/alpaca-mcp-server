@@ -372,20 +372,15 @@ Update your `claude_desktop_config.json` to use Docker Compose:
       "command": "docker",
       "args": [
         "compose",
-        "-f", "/path/to/alpaca-mcp-server/docker-compose.yml",
         "run", "--rm", "alpaca-mcp-server"
       ],
-      "cwd": "/path/to/alpaca-mcp-server",
-      "env": {
-        "ALPACA_API_KEY": "your_alpaca_api_key",
-        "ALPACA_SECRET_KEY": "your_alpaca_secret_key"
-      }
+      "cwd": "/path/to/alpaca-mcp-server"
     }
   }
 }
 ```
 
-**Note:** Replace `/path/to/alpaca-mcp-server` with the actual path to your project directory.
+**Note:** Replace `/path/to/alpaca-mcp-server` with the actual path to your project directory. API keys should be configured in the `.env` file, not in this configuration.
 
 ### Available Docker Compose Files
 
