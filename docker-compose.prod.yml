@@ -1,7 +1,7 @@
 services:
   alpaca-mcp-server:
     # Use published image for production instead of building locally
-    image: ghcr.io/chand1012/alpaca-mcp-server:${IMAGE_TAG:-10f5821}
+    image: ghcr.io/chand1012/alpaca-mcp-server:${IMAGE_TAG:-latest}
     # Remove build context for production
     build: null
     # Production logging configuration
@@ -24,11 +24,8 @@ services:
         reservations:
           memory: 128M
           cpus: '0.1'
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
+    # Production restart policy (for docker compose compatibility)
+    restart: on-failure:3
     # Production healthcheck with longer intervals
     healthcheck:
       test: ["CMD", "pgrep", "-f", "alpaca_mcp_server.py"]
