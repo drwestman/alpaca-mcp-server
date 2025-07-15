@@ -15,4 +15,9 @@ RUN uv sync --frozen --no-dev --no-install-project && rm -rf /root/.uv/cache
 COPY README.md ./
 COPY . .
 
+# Create non-root user for security
+RUN useradd --create-home --uid 1000 appuser && \
+    chown -R appuser:appuser /app
+USER appuser
+
 CMD ["uv", "run", "alpaca_mcp_server.py"]

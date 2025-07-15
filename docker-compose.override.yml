@@ -1,0 +1,25 @@
+services:
+  alpaca-mcp-server:
+    # Mount source code for live development
+    volumes:
+      - .:/app:delegated
+      - /app/.venv  # Prevent overwriting the container's virtual environment
+    # Development-specific environment variables
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+      - ALPACA_PAPER_TRADE=true  # Always use paper trading in development
+    # Increase resource limits for development
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+    # Override healthcheck for faster development feedback
+    healthcheck:
+      interval: 10s
+      timeout: 5s
+      retries: 2
+      start_period: 5s
+    # Development-specific command for live reloading
+    command: ["uv", "run", "--reload", "alpaca_mcp_server.py"]
