@@ -1,7 +1,7 @@
 services:
   alpaca-mcp-server:
     # Use published image for production instead of building locally
-    image: ghcr.io/chand1012/alpaca-mcp-server:10f5821
+    image: ghcr.io/chand1012/alpaca-mcp-server:${IMAGE_TAG:-10f5821}
     # Remove build context for production
     build: null
     # Production logging configuration

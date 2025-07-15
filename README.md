@@ -384,7 +384,7 @@ Update your `claude_desktop_config.json` to use Docker Compose:
 
 ### Available Docker Compose Files
 
-- `docker-compose.yml` - Base configuration for production use
+- `docker-compose.yml` - Base configuration for all environments
 - `docker-compose.override.yml` - Development overrides (used automatically with `docker compose up`)
 - `docker-compose.prod.yml` - Production-specific optimizations
 
