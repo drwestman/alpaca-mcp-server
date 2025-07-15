@@ -20,4 +20,4 @@ RUN useradd --create-home --uid 1000 appuser && \
     chown -R appuser:appuser /app
 USER appuser
 
-CMD ["uv", "run", "alpaca_mcp_server.py"]
+CMD ["uv", "run", "python", "alpaca_mcp_server.py"]
