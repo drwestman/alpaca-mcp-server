@@ -11,11 +11,8 @@ services:
       - ALPACA_PAPER_TRADE=${ALPACA_PAPER_TRADE:-true}
     stdin_open: true
     tty: true
-    # Uncomment the following lines if you need to expose a port for health checks or web interface
-    # ports:
-    #   - "8080:8080"
     healthcheck:
-      test: ["CMD", "pgrep", "-f", "alpaca_mcp_server.py"]
+      test: ["CMD", "pidof", "python"]
       interval: 30s
       timeout: 10s
       retries: 3
